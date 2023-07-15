@@ -2,10 +2,14 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class FlutterMapApp extends StatefulWidget {
+  final Position currentPosition;
+
+  FlutterMapApp(this.currentPosition);
   @override
   _FlutterMapAppState createState() => _FlutterMapAppState();
 }
@@ -15,9 +19,21 @@ class _FlutterMapAppState extends State<FlutterMapApp> {
   List<Marker> _markers = [];
   SharedPreferences? _prefs;
 
+  CameraPosition _initialCameraPosition = CameraPosition(
+    target: LatLng(0, 0),
+    zoom: 2,
+  );
+
   @override
   void initState() {
     super.initState();
+    _initialCameraPosition = CameraPosition(
+      target: LatLng(
+        widget.currentPosition.latitude,
+        widget.currentPosition.longitude,
+      ),
+      zoom: 8,
+    );
     loadMarkers();
   }
 
@@ -152,10 +168,7 @@ class _FlutterMapAppState extends State<FlutterMapApp> {
         ),
         body: GoogleMap(
           onMapCreated: onMapCreated,
-          initialCameraPosition: CameraPosition(
-            target: LatLng(0, 0),
-            zoom: 4,
-          ),
+          initialCameraPosition: _initialCameraPosition,
           markers: Set<Marker>.from(_markers),
           onTap: (position) => addMarker(position),
         ),
