@@ -47,6 +47,7 @@ The Flutter Map App relies on the following dependencies:
 
 - `google_maps_flutter: ^2.0.9`: Provides the map display and marker functionality.
 - `shared_preferences: ^2.0.8`: Handles local storage for marker and note persistence.
+- `geolocator: ^7.0.3`: Provide current user location to improve experience.
 
 These dependencies will be automatically fetched when running `flutter pub get`.
 
